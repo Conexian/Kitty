@@ -1,0 +1,18 @@
+
+===== KittyConsole Help =====
+
+Basic Commands:
+  meow <msg>        - Prints a message.
+  clear             - Clears the console.
+  beep <freq> <ms>  - Beeps at freq (Hz) for ms duration. (Loud depending system volume)
+  help              - Displays this help page.
+  ping <addr> [n]   - Pings addr n times (default: 1).
+  art               - Prints the cool kitty.
+  sysinfo           - Prints simple system information.
+
+Advanced:
+  readfile <name> <ext> - Reads an embedded file from "Resources".
+
+===========================
+Type a command and press Enter.
+===========================
