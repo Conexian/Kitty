@@ -1,7 +1,6 @@
 {
   "profiles": {
     "Kitty": {
-      "commandName": "Kitty",
     }
   }
 }
