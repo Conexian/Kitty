@@ -1,7 +1,10 @@
-﻿using System.Net.NetworkInformation;
+using System.Net.NetworkInformation;
 using System;
 using System.Management;
 using LibreHardwareMonitor.Hardware;
+using System.Text;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 
 namespace KittyConsole
 {
@@ -35,28 +38,32 @@ namespace KittyConsole
 
         public static void PerformPing(string[] arguments)
         {
-            if (arguments.Length == 0)
-            {
-                Console.WriteLine("Usage: ping <domain> [pingCount]");
-                return;
-            }
+            if (arguments.Length == 0) { Console.WriteLine("Usage: ping <address> [pingCount] [delay] [bufferSize]"); return; }
 
             int pingCount = 1;
+            int delay = 1000;
+            int bufferSize = 32;
 
-            if (arguments.Length == 2 && !int.TryParse(arguments[1], out pingCount))
-            {
-                Console.WriteLine("Error: Ping count must be an integer.");
-                return;
-            }
+            if (arguments.Length >= 2 && !int.TryParse(arguments[1], out pingCount)) { Console.WriteLine("Error: pingCount must be an integer"); return; }
+            if (arguments.Length >= 3 && !int.TryParse(arguments[2], out delay)) { Console.WriteLine("Error: Delay must be an integer"); return; }
+            if (arguments.Length >= 4 && !int.TryParse(arguments[3], out bufferSize)) { Console.WriteLine("Error: Buffer size must be an integer"); return; }
 
             string targetDomain = arguments[0];
             Ping pingSender = new Ping();
+
+            byte[] buffer = Encoding.ASCII.GetBytes(new string('A', bufferSize));
+            PingOptions options = new PingOptions();
 
             try
             {
                 for (int i = 0; i < pingCount; i++)
                 {
-                    PingReply reply = pingSender.Send(targetDomain);
+                    if (i > 0)
+                    {
+                        Thread.Sleep(delay);
+                    }
+
+                    PingReply reply = pingSender.Send(targetDomain, 10000, buffer, options);
 
                     if (reply.Status == IPStatus.Success)
                     {
@@ -80,6 +87,55 @@ namespace KittyConsole
                 Console.WriteLine("3. Firewall blocking ICMP requests.");
                 Console.WriteLine($"Error: {e.Message}");
             }
+
+            pingSender.Dispose();
+        }
+
+        public static void PortInfo(string[] arguments)
+        {
+            if (arguments.Length != 3)
+            {
+                Console.WriteLine("Usage: portscan <target> <startPort> <endPort>");
+                return;
+            }
+
+            if (!int.TryParse(arguments[1], out int startPort) || !int.TryParse(arguments[2], out int endPort))
+            {
+                Console.WriteLine("Error: Ports must be integers.");
+                return;
+            }
+
+            if (startPort > endPort)
+            {
+                Console.WriteLine("Error: startPort must not be greater than endPort.");
+                return;
+            }
+
+            string target = arguments[0];
+
+            Console.WriteLine($"Scanning {target} from port {startPort} to {endPort}...\n");
+
+            Thread spinnerThread = new Thread(Spinner.ShowSpinner);
+            spinnerThread.Start();
+
+            List<Thread> scanThreads = new List<Thread>();
+
+            for (int port = startPort; port <= endPort; port++)
+            {
+                Thread thread = new Thread(() => PortScanning.ScanPort(target, port));
+                scanThreads.Add(thread);
+                thread.Start();
+            }
+
+            foreach (var thread in scanThreads)
+            {
+                thread.Join();
+            }
+
+            Spinner.StopSpinner();
+            spinnerThread.Join();
+
+            Console.WriteLine("\nPort scan complete.");
         }
     }
 
@@ -97,14 +153,13 @@ namespace KittyConsole
         {
             if (!isInitialized)
             {
-                Thread spinnerThread = new Thread(ShowSpinner);
+                Thread spinnerThread = new Thread(Spinner.ShowSpinner);
                 spinnerThread.Start();
 
                 InitializeSystemInfo();
-
                 isInitialized = true;
 
-                spinnerRunning = false;
+                Spinner.StopSpinner();
                 spinnerThread.Join();
             }
 
@@ -190,23 +245,59 @@ namespace KittyConsole
             }
             return 0;
         }
+    }
 
-        private static volatile bool spinnerRunning = true;
 
-        private static void ShowSpinner()
+    internal class PortScanning
+    {
+        public static void ScanPort(string target, int port)
         {
+            try
+            {
+                using (TcpClient client = new TcpClient())
+                {
+                    var result = client.BeginConnect(target, port, null, null);
+                    bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(1));
+
+                    if (success)
+                    {
+                        lock (Console.Out)
+                        {
+                            Console.Write($"\rPort {port} is OPEN.           \n");
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Silent failure for closed ports
+            }
+        }
+    }
+
+    internal static class Spinner
+    {
+        private static volatile bool spinnerRunning;
+
+        public static void ShowSpinner()
+        {
+            spinnerRunning = true;
             char[] spinner = { '|', '/', '-', '\\' };
             int counter = 0;
 
-            Console.Write("Fetching system info... ");
-
             while (spinnerRunning)
             {
-                Console.Write(spinner[counter % spinner.Length]);
+                Console.Write($"\rScanning... {spinner[counter % spinner.Length]}");
                 Thread.Sleep(100);
-                Console.Write("\b");
                 counter++;
             }
+
+            Console.Write("\r                 \r");
+        }
+
+        public static void StopSpinner()
+        {
+            spinnerRunning = false;
         }
     }
 }
