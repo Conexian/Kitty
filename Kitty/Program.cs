@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 namespace KittyConsole
 {
@@ -11,9 +11,11 @@ namespace KittyConsole
 
             FileLoader.DisplayEmbeddedFile("art", "txt");
 
+            string userName = Environment.UserName;
+
             while (true)
             {
-                Console.Write("User: ");
+                Console.Write($"{userName}-User: ");
                 string userInput = Console.ReadLine() ?? string.Empty;
 
                 if (!string.IsNullOrWhiteSpace(userInput))
@@ -53,7 +55,7 @@ namespace KittyConsole
 
         public static void ReadEmbeddedFileFromArguments(string[] arguments)
         {
-            if (arguments.Length < 2)
+            if (arguments.Length != 2)
             {
                 Console.WriteLine("Usage: readfile <filename> <extension>");
                 return;
