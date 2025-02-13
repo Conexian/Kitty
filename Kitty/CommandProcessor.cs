@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using KittyConsole;
 
 namespace KittyConsole
@@ -18,6 +18,7 @@ namespace KittyConsole
                     break;
 
                 case "help":
+                case "?":
                     FileLoader.DisplayEmbeddedFile("help", "txt");
                     break;
 
@@ -26,15 +27,15 @@ namespace KittyConsole
                     break;
 
                 case "ping":
-                    KittyConsole.UtilityFunctions.PerformPing(commandArgs);
+                    UtilityFunctions.PerformPing(commandArgs);
                     break;
 
                 case "beep":
-                    KittyConsole.UtilityFunctions.PlayBeepSound(commandArgs);
+                    UtilityFunctions.PlayBeepSound(commandArgs);
                     break;
 
                 case "meow":
-                    KittyConsole.UtilityFunctions.DisplayMessage(commandArgs);
+                    UtilityFunctions.DisplayMessage(commandArgs);
                     break;
 
                 case "readfile":
@@ -42,7 +43,11 @@ namespace KittyConsole
                     break;
 
                 case "sysinfo":
-                    KittyConsole.SystemInfo.ShowSystemInfo();
+                    SystemInfo.ShowSystemInfo();
+                    break;
+
+                case "portscan":
+                    UtilityFunctions.PortInfo(commandArgs);
                     break;
 
                 default:
