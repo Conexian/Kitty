@@ -7,12 +7,12 @@ KittyConsole includes several basic commands:
 
 - `help` - Displays a list of available commands.
 - `clear` - Clears the console screen.
-- `ping` - Simulates a ping response.
+- `ping` - Pings a specified address.
 - `beep` - Emits a system beep sound.
-- `meow` - Prints a cat-related message.
-- `readfile` - Reads and displays the contents of a specified file.
+- `meow` - Prints a message.
+- `readfile` - Reads and displays the contents of a specified build embedded file.
 - `sysinfo` - Provides basic system information.
-- `portscan` - Performs a basic port scan on a given IP address or hostname.
+- `portscan` - Performs a port scan on a given IP address.
 
 ## Usage
 1. Download the source code from the repository.
