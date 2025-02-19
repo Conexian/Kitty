@@ -35,8 +35,10 @@ KittyConsole is a simple console-based application written in C#. It's a learnin
 
 ## Usage
 1. Download the source code from the repository.
-2. Open `KittyConsole.sln` in Visual Studio.
+2. Open `Kitty.sln` in Visual Studio.
 3. Build and run the project.
+OR
+Download the release exe.
 
 ## Development & Updates
 This project will receive frequent updates until I completely run out of ideas. Feel free to contribute or suggest new features!
