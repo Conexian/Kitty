@@ -50,6 +50,54 @@ namespace KittyConsole
                     UtilityFunctions.PortInfo(commandArgs);
                     break;
 
+                case "commonports":
+                    FileLoader.DisplayEmbeddedFile("CommonPorts", "txt");
+                    break;
+
+                case "publicip":
+                    UtilityFunctions.GetPublicIP();
+                    break;
+
+                case "hash":
+                    UtilityFunctions.ComputeFileHash(commandArgs);
+                    break;
+
+                case "cat":
+                    UtilityFunctions.ReadTextFile(commandArgs);
+                    break;
+
+                case "base64":
+                    UtilityFunctions.Base64Converter(commandArgs);
+                    break;
+
+                case "open":
+                    UtilityFunctions.OpenPath(commandArgs);
+                    break;
+
+                case "encrypt":
+                    Encryption.EncryptText(commandArgs);
+                    break;
+
+                case "decrypt":
+                    Encryption.DecryptText(commandArgs);
+                    break;
+
+                case "foldersize":
+                    UtilityFunctions.CalculateDirectorySize(commandArgs);
+                    break;
+
+                case "batchrename":
+                    UtilityFunctions.BatchRenameFiles(commandArgs);
+                    break;
+
+                case "netstat":
+                    UtilityFunctions.Netstat(commandArgs);
+                    break;
+
+                case "download":
+                    Downloading.DownloadUsingChoco(commandArgs);
+                    break;
+
                 default:
                     Console.WriteLine($"{userCommand} is not a recognized command.");
                     break;
