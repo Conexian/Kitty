@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,10 +9,12 @@
 
   <ItemGroup>
     <None Remove="help.txt" />
+    <None Remove="Resources\CommonPorts.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\art.txt" />
+    <EmbeddedResource Include="Resources\CommonPorts.txt" />
     <EmbeddedResource Include="Resources\help.txt" />
   </ItemGroup>
 
