@@ -1,18 +1,29 @@
 
-===== KittyConsole Help =====
-
 Basic Commands:
-  meow <msg>        - Prints a message.
-  clear             - Clears the console.
-  beep <freq> <ms>  - Beeps at freq (Hz) for ms duration. (Loud depending system volume)
-  help              - Displays this help page.
-  ping <addr> [n]   - Pings addr n times (default: 1).
-  art               - Prints the cool kitty.
-  sysinfo           - Prints simple system information.
+  help | ?                       - Show this help.
+  clear                          - Clear the console.
+  meow <message>                 - Print a message.
+  art                            - Display a cool kitty.
+  beep <frequency> <duration>    - Beep at frequency (Hz) for duration (ms).
+
+File & Encoding:
+  cat <file> [linesNumbers (true/false)] [maxLines] - Print a file with optional line numbers and line limit.
+  open <path>                    - Open a file or directory.
+  foldersize <path> [recursive (true/false)] [listFiles (true/false)] - Show folder size.
+  batchrename <directoryPath> <searchPattern> <replacePattern> [recursive] - Batch rename files in a directory.
+  hash <file> <algorithm>        - Compute file hash (MD5, SHA1, SHA256).
+  base64 <encode|decode> <text>  - Base64 encode or decode text.
+  encrypt <text>                 - Encrypt text.
+  decrypt <text> <key> <iv>      - Decrypt text using key and IV.
+
+Network & System:
+  sysinfo                        - Show system information.
+  publicip                       - Display your public IP.
+  ping <address> [count] [delay] [size] - Ping an address.
+  portscan <target> <start> <end> - Scan target ports.
+  commonports                    - List common ports.
+  netstat [tcp|udp|all]          - Show active network connections.
+  download <packageName> [silent (true/false)] - Downloads a package with "Chocolatey".
 
 Advanced:
-  readfile <name> <ext> - Reads an embedded file from "Resources".
-
-===========================
-Type a command and press Enter.
-===========================
+  readfile <name> <extension>  - Read an embedded resource file.
