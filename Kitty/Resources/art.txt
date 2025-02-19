@@ -12,5 +12,3 @@
 						⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢳⡀⠀⠀⢀⣠⠴⠚⠓⠛⠁
 						⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠳⣄⣹⠉
 
-						Kitty Console - By Conexian
-						Type "help" for a help page!
